@@ -17,29 +17,30 @@ import java.time.Instant;
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id" , nullable = false)
     private int id;
 
-    @Column(name = "car_id")
+    @Column(name = "car_id" , nullable = false)
     private int carId;
 
-    @Column(name = "name")
+    @Column(name = "name" , nullable = false , length = 200)
     private String name;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name" , nullable = false , length = 200)
     private String firstName;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false , length = 200)
     private String email;
 
-    @Column(name = "message")
+    @Column(name = "message" , nullable = false , length = 200)
     private String message;
 
-    @Column(name = "contact")
+    @Column(name = "contact" , nullable = false , length = 200)
     private String contact;
 
-    @Column(name = "appointment_date")
+    @Column(name = "appointment_date" , nullable = false)
     private Instant appointmentDate;
 
-    @Column(name = "status")
+    @Column(name = "status" , nullable = false , length = 200)
     private String status;
 }

@@ -15,11 +15,12 @@ import lombok.Setter;
 public class Images {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id" , nullable = false)
     private int id;
 
-    @Column(name = "product_id")
+    @Column(name = "product_id" , nullable = false )
     private int productId;
 
-    @Column(name = "url")
+    @Column(name = "url" , nullable = false , length = 200)
     private String url;
 }

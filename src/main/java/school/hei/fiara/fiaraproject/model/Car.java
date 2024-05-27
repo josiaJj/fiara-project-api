@@ -15,38 +15,39 @@ import lombok.Setter;
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name" , nullable = false , length = 200)
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description" , nullable = false, length = 200)
     private String description;
 
-    @Column(name = "brand")
+    @Column(name = "brand" , nullable = false , length = 200)
     private String brand;
 
-    @Column(name = "model")
+    @Column(name = "model" , nullable = false , length = 200)
     private String model;
 
-    @Column(name = "price")
+    @Column(name = "price" , nullable = false)
     private double price;
 
-    @Column(name = "color")
+    @Column(name = "color" , nullable = false , length = 200)
     private String color;
 
-    @Column(name = "motor_type")
+    @Column(name = "motor_type" , nullable = false , length = 200)
     private String motorType;
 
-    @Column(name = "power")
+    @Column(name = "power" , nullable = false , length = 200)
     private String power;
 
-    @Column(name = "place_number")
+    @Column(name = "place_number" , nullable = false , length = 200)
     private int placeNumber;
 
-    @Column(name = "status")
+    @Column(name = "status" , nullable = false , length = 200)
     private String status;
 
-    @Column(name = "type")
+    @Column(name = "type" ,nullable = false , length = 200)
     private String type;
 }
