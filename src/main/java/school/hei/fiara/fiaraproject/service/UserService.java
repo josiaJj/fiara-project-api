@@ -17,14 +17,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
-    private final JwtService jwtService;
-
-    public UserService(UserRepository userRepository, JwtService jwtService) {
-        this.userRepository = userRepository;
-        this.jwtService = jwtService;
-    }
-
+@Autowired
+private UserRepository userRepository;
+@Autowired
+private JwtService jwtService;
 
     public String login(LoginRequest request) {
         Optional<User> userOptional = userRepository.findByEmail(request.getUsername());

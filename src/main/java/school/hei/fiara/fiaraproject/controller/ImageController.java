@@ -2,43 +2,41 @@ package school.hei.fiara.fiaraproject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import school.hei.fiara.fiaraproject.model.Car;
 import school.hei.fiara.fiaraproject.model.Images;
 import school.hei.fiara.fiaraproject.service.ImageService;
 
+
 import java.util.List;
-import java.util.Optional;
 
-@RequestMapping("/images")
 @RestController
+@CrossOrigin
 public class ImageController {
+
     @Autowired
-    private ImageService  imageService;
+    private ImageService imageService;
 
-
-    @GetMapping("/{id}")
-    public Optional<Images> getImageById(@PathVariable Integer id) {
-        return imageService.findById(id);
+    @GetMapping("/Image/{id}")
+    public Images getImageById(@PathVariable Integer id) {
+        return imageService.getImageById(id);
     }
 
-    @GetMapping
+    @GetMapping("/Image")
     public List<Images> getAllImages() {
-        return imageService.findAll();
+        return imageService.getAllImages();
     }
 
-    @PostMapping
-    public Images createImage(@RequestBody Images images) {
-        return imageService.save(images);
+    @PostMapping("/Image/Create")
+    public Images createImage(@RequestBody Images image) {
+        return imageService.createImage(image);
     }
 
-    @PutMapping
-    public Images updateImages(@RequestBody Images images){
-        return imageService.update(images);
+    @PutMapping("/Image/Update{id}")
+    public Images updateImage(@PathVariable Integer id, @RequestBody Images image) {
+        return imageService.updateImage(id, image);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/Image/Delete/{id}")
     public void deleteImageById(@PathVariable Integer id) {
-        imageService.deleteById(id);
+        imageService.deleteImageById(id);
     }
-
 }

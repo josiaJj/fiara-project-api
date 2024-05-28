@@ -1,6 +1,7 @@
 package school.hei.fiara.fiaraproject.config;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,13 +23,16 @@ import school.hei.fiara.fiaraproject.service.JwtService;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+   @Autowired
+   private UserDetailsService userDetailsService;
+   @Autowired
+   private JwtService jwtService;
 
     public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService) {
-        this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
+        this.jwtService = jwtService;
     }
+
 
     @Override
     protected void doFilterInternal(

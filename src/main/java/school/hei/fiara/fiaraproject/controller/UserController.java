@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/users")
+@CrossOrigin
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping("/login")
+    @PostMapping("/User/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         String token = userService.login(loginRequest);
         if (token != null) {
@@ -27,26 +27,28 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).body("Invalid username or password");
         }
     }
-    @GetMapping("/{id}")
+    @GetMapping("/User/{id}")
     public User getUserById(@PathVariable Integer id){
         return userService.getUserById(id);
     }
 
-    @GetMapping
+
+    @GetMapping("/User")
     public List<User> getAllUsers() {
         return userService.findAll();
     }
 
+    @PostMapping("/User/Create")
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/User/Update/{id}")
     public User updateUser(@PathVariable Integer id, @RequestBody User updatedUser) {
         return userService.updateUser(id, updatedUser);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/User/Delete/{id}")
     public void deleteUserById(@PathVariable Integer id) {
         userService.deleteUserById(id);
     }
