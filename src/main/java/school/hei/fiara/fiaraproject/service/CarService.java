@@ -54,4 +54,21 @@ public class CarService {
     public void deleteCarById(Integer id) {
         carRepository.deleteById(id);
     }
+
+
+    public List<String> getAllCarTypes() {
+        return carRepository.findDistinctTypes();
+    }
+
+    public List<String> getAllMotorTypes() {
+        return carRepository.findDistinctMotorTypes();
+    }
+
+    public Double getMinPrice() {
+        return carRepository.findMinPrice();
+    }
+
+    public Double getMaxPrice() {
+        return carRepository.findMaxPrice();
+    }
 }
