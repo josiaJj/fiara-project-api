@@ -26,4 +26,12 @@ public interface CarRepository extends JpaRepository<Car,Integer> {
 
     @Query("SELECT c FROM Car c ORDER BY c.id DESC LIMIT 6")
     List<Car> findShowCar();
+
+
+    @Query("SELECT c FROM Car c WHERE c.brand = ?")
+    List<Car> findByBrand(String brand);
+
+
+    @Query("SELECT c FROM Car c WHERE c.model = ?")
+    List<Car> findByModel(String model);
 }

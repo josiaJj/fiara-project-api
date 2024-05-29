@@ -40,19 +40,5 @@ public class CarController {
     }
 
 
-    @GetMapping("/Car/Types")
-    public List<String> getAllCarTypes() {
-        return carService.getAllCarTypes();
-    }
-
-    @GetMapping("/Car/MotorTypes")
-    public List<String> getAllMotorTypes() {
-        return carService.getAllMotorTypes();
-    }
-
-    @GetMapping("/Car/PriceRange")
-    public Double[] getPriceRange() {
-        return new Double[]{carService.getMinPrice(), carService.getMaxPrice()};
-    }
 
 }

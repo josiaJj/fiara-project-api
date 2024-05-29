@@ -79,4 +79,11 @@ public class CarService {
     public List<Car> getShowCars() {
         return carRepository.findShowCar();
     }
+    public List<Car> getCarByBrand(String brand){
+        return carRepository.findByBrand(brand);
+    }
+    public List<Car> getCarByModel(String model){
+        return carRepository.findByModel(model);
+    }
+
 }
