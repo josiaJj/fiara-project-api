@@ -3,43 +3,42 @@ package school.hei.fiara.fiaraproject.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import school.hei.fiara.fiaraproject.model.Car;
-import school.hei.fiara.fiaraproject.model.User;
 import school.hei.fiara.fiaraproject.service.CarService;
 
 import java.util.List;
-import java.util.Optional;
 
-@RequestMapping("/cars")
 @RestController
+@CrossOrigin
 public class CarController {
+
     @Autowired
     private CarService carService;
 
-
-
-    @GetMapping("/{id}")
-    public Optional<Car> getCarById(@PathVariable Integer id) {
-        return carService.findById(id);
+    @GetMapping("/Car/{id}")
+    public Car getCarById(@PathVariable Integer id) {
+        return carService.getCarById(id);
     }
 
-    @GetMapping
+    @GetMapping("/Car")
     public List<Car> getAllCars() {
-        return carService.findAll();
+        return carService.getAllCars();
     }
 
-    @PostMapping
+    @PostMapping("/Car/Create")
     public Car createCar(@RequestBody Car car) {
-        return carService.save(car);
+        return carService.createCar(car);
     }
 
-    @PutMapping
-    public Car updateCar(@RequestBody Car car){
-        return carService.update(car);
+    @PutMapping("/Car/Update/{id}")
+    public Car updateCar(@PathVariable Integer id, @RequestBody Car car) {
+        return carService.updateCar(id, car);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/Car/Delete/{id}")
     public void deleteCarById(@PathVariable Integer id) {
-        carService.deleteById(id);
+        carService.deleteCarById(id);
     }
+
+
 
 }
