@@ -50,7 +50,7 @@ private JwtService jwtService;
         return save;
     }
 
-
+    @SuppressWarnings("null")
     public User updateUser(Integer id, User updatedUser) {
         Optional<User> existingUser = userRepository.findById(id);
 
@@ -67,7 +67,7 @@ private JwtService jwtService;
         }
     }
 
-
+    @SuppressWarnings("null")
     public void deleteUserById(Integer id) {
         userRepository.deleteById(id);
     }
