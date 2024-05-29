@@ -23,4 +23,7 @@ public interface CarRepository extends JpaRepository<Car,Integer> {
 
     @Query("SELECT DISTINCT c.brand FROM Car c LIMIT ?")
     List<String> findDistinctBrands(int limit);
+
+    @Query("SELECT c FROM Car c ORDER BY c.id DESC LIMIT 6")
+    List<Car> findShowCar();
 }

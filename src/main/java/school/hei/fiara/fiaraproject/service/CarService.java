@@ -75,4 +75,8 @@ public class CarService {
     public List<String> getCarBrands(int limit) {
         return carRepository.findDistinctBrands(limit);
     }
+
+    public List<Car> getShowCars() {
+        return carRepository.findShowCar();
+    }
 }
