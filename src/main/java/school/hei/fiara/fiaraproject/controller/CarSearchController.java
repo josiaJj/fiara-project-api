@@ -37,14 +37,13 @@ public class CarSearchController {
     }
 
 
-    @GetMapping("/Car/Brands")
-    public List<String> getCarBrands(@RequestParam int limit) {
-        return carService.getCarBrands(limit);
-    }
-
-    @GetMapping("/Car/Show")
-    public List<Car> getShowCars(@RequestParam int limit) {
-        return carService.getShowCars(limit);
+     @GetMapping("/Car/ByBrand")
+    public List<Car> getCarsByBrand(String brand){
+        return carService.getCarsByBrand(brand);
+     }
+     @GetMapping("/Car/ByModel")
+    public List<Car> getCarByModel(String model){
+        return carService.getCarByModel(model);
     }
 
 }
