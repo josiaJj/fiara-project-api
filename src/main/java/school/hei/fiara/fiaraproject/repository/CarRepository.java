@@ -20,4 +20,7 @@ public interface CarRepository extends JpaRepository<Car,Integer> {
 
     @Query("SELECT MAX(c.price) FROM Car c")
     Double findMaxPrice();
+
+    @Query("SELECT DISTINCT c.brand FROM Car c LIMIT ?")
+    List<String> findDistinctBrands(int limit);
 }

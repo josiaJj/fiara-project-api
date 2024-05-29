@@ -71,4 +71,8 @@ public class CarService {
     public Double getMaxPrice() {
         return carRepository.findMaxPrice();
     }
+
+    public List<String> getCarBrands(int limit) {
+        return carRepository.findDistinctBrands(limit);
+    }
 }
