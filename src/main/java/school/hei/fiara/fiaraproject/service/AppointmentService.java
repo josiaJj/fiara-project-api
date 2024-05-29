@@ -34,7 +34,7 @@ public class AppointmentService {
         Optional<Appointment> existingAppointment = appointmentRepository.findById(id);
         if (existingAppointment.isPresent()) {
             Appointment appointmentToUpdate = existingAppointment.get();
-            appointmentToUpdate.setCarId(appointment.getCarId());
+            appointmentToUpdate.setCar(appointment.getCar());
             appointmentToUpdate.setName(appointment.getName());
             appointmentToUpdate.setFirstName(appointment.getFirstName());
             appointmentToUpdate.setEmail(appointment.getEmail());

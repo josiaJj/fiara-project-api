@@ -1,6 +1,7 @@
 package school.hei.fiara.fiaraproject.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import school.hei.fiara.fiaraproject.model.Car;
 import school.hei.fiara.fiaraproject.repository.CarRepository;
@@ -73,13 +74,14 @@ public class CarService {
     }
 
     public List<String> getCarBrands(int limit) {
-        return carRepository.findDistinctBrands(limit);
+        return carRepository.findDistinctBrands(PageRequest.of(0, limit));
     }
 
-    public List<Car> getShowCars() {
-        return carRepository.findShowCar();
+    public List<Car> getShowCars(int limit) {
+        return carRepository.findShowCar(PageRequest.of(0, limit));
     }
-    public List<Car> getCarByBrand(String brand){
+
+    public List<Car> getCarsByBrand(String brand) {
         return carRepository.findByBrand(brand);
     }
     public List<Car> getCarByModel(String model){

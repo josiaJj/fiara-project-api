@@ -18,10 +18,9 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id" , nullable = false)
     private int id;
-
-    @Column(name = "car_id" , nullable = false)
-    private int carId;
-
+    @ManyToOne
+    @JoinColumn(name = "car_id", nullable = false)
+    private Car car;
     @Column(name = "name" , nullable = false , length = 200)
     private String name;
 
@@ -59,12 +58,12 @@ public class Appointment {
         this.id = id;
     }
 
-    public int getCarId() {
-        return carId;
+    public Car getCar() {
+        return car;
     }
 
-    public void setCarId(int carId) {
-        this.carId = carId;
+    public void setCar(Car car) {
+        this.car = car;
     }
 
     public String getName() {

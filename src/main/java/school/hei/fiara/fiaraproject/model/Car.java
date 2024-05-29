@@ -32,7 +32,7 @@ public class Car {
     @Column(name = "color" , nullable = false , length = 200)
     private String color;
 
-    @Column(name = "motor_type" , nullable = false , length = 200)
+    @Column(name = "motorType" , nullable = false , length = 200)
     private String motorType;
 
     @Column(name = "power" , nullable = false , length = 200)

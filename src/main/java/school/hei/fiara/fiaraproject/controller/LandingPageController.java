@@ -16,12 +16,12 @@ public class LandingPageController {
     private CarService carService;
 
     @GetMapping("/Car/CarBrand")
-    public List<String> getCarBrands() {
+    public List<String> getCarBrands(int limit) {
         return carService.getCarBrands(6);
     }
 
     @GetMapping("/Car/ShowCar")
-    public List<Car> getShowCars() {
-        return carService.getShowCars();
+    public List<Car> getShowCars(int limit) {
+        return carService.getShowCars(6);
     }
 }
