@@ -25,10 +25,17 @@ public class CarSearchController {
         return carService.getAllMotorTypes();
     }
 
-    @GetMapping("/Car/PriceRange")
-    public Double[] getPriceRange() {
-        return new Double[]{carService.getMinPrice(), carService.getMaxPrice()};
+
+
+    @GetMapping("/Car/MinPrice")
+    public Double getMinPrice(){
+        return carService.getMinPrice();
     }
+    @GetMapping("/Car/MaxPrice")
+    public Double getMaxPrice(){
+        return carService.getMaxPrice();
+    }
+
 
     @GetMapping("/Car/ByBrand")
     public List<Car> getCarsByBrand(@RequestParam String brand) {
