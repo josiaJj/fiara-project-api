@@ -22,6 +22,7 @@ import school.hei.fiara.fiaraproject.service.CustomUserDetailsService;
 import school.hei.fiara.fiaraproject.service.JwtService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -77,7 +78,7 @@ public class SecurityConfig {
             UserDetails userDetails = User.builder()
                     .username(user.getUsername())
                     .password(passwordEncoder().encode(user.getPassword()))
-                    .roles("USER")
+                    .authorities(Collections.emptyList())
                     .build();
             managers.add(new InMemoryUserDetailsManager(userDetails));
         }

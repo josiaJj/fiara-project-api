@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Service;
 import school.hei.fiara.fiaraproject.model.LoginRequest;
-import school.hei.fiara.fiaraproject.model.Role;
 import school.hei.fiara.fiaraproject.model.User;
 import school.hei.fiara.fiaraproject.repository.UserRepository;
 
@@ -46,13 +45,12 @@ private JwtService jwtService;
         return userRepository.findAll();
     }
     public User createUser(User user) {
-        user.setRole(Role.USER);
         User save = userRepository.save(user);
         new InMemoryUserDetailsManager(save);
         return save;
     }
 
-    @SuppressWarnings("null")
+
     public User updateUser(Integer id, User updatedUser) {
         Optional<User> existingUser = userRepository.findById(id);
 
@@ -69,7 +67,7 @@ private JwtService jwtService;
         }
     }
 
-    @SuppressWarnings("null")
+
     public void deleteUserById(Integer id) {
         userRepository.deleteById(id);
     }
