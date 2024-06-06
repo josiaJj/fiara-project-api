@@ -30,6 +30,7 @@ import java.util.List;
 public class SecurityConfig {
 
     @Lazy
+
     @Autowired
     private JwtService jwtService;
 
