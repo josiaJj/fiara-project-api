@@ -42,6 +42,14 @@ public class Appointment {
     @Column(name = "status" , nullable = false , length = 200)
     private String status;
 
+
+    public boolean canUpdateStatus(String newStatus) {
+        if (appointmentDate.isAfter(Instant.now())) {
+            return newStatus.equals("Confirm") || newStatus.equals("Reject");
+        } else {
+            return newStatus.equals("Archive");
+        }
+    }
     public String getStatus() {
         return status;
     }

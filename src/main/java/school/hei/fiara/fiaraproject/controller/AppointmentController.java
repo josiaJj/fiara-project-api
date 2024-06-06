@@ -37,7 +37,7 @@ public class AppointmentController {
     @PostMapping("/SaveAppointment")
     public Appointment saveAppointment(@RequestBody Appointment appointment) {
         Appointment savedAppointment = appointmentRepository.save(appointment);
-        sendEmail(appointment);
+        sendEmailToAdmin(appointment);
         return savedAppointment;
     }
 
@@ -50,12 +50,18 @@ public class AppointmentController {
     public void deleteAppointmentById(@PathVariable Integer id) {
         appointmentService.deleteAppointmentById(id);
     }
-
-
+    @PutMapping("/UpdateStatus")
+    public Appointment updateAppointmentStatus(@PathVariable Integer id, @RequestParam String status) {
+        Appointment updatedAppointment = appointmentService.updateAppointmentStatus(id, status);
+        if (updatedAppointment != null) {
+            sendEmailToClient(updatedAppointment);
+        }
+        return updatedAppointment;
+    }
     @Value("${emailAdmin}")
     private String emailAdmin;
 
-    private void sendEmail(Appointment appointment) {
+    private void sendEmailToAdmin(Appointment appointment) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(emailAdmin);
         mailMessage.setSubject("New Appointment Created");
@@ -67,6 +73,23 @@ public class AppointmentController {
                 "Appointment Date: " + appointment.getAppointmentDate() + "\n" +
                 "Car: " + appointment.getCar().getName() + "\n" +
                 "Status: " + appointment.getStatus());
+        mailSender.send(mailMessage);
+    }
+    private void sendEmailToClient(Appointment appointment) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(appointment.getEmail());
+        mailMessage.setSubject("Appointment Status Updated");
+        mailMessage.setText("Dear " + appointment.getFirstName() + ",\n\n" +
+                "Your appointment status has been updated to: " + appointment.getStatus() + "\n\n" +
+                "Details:\n" +
+                "Name: " + appointment.getName() + "\n" +
+                "First Name: " + appointment.getFirstName() + "\n" +
+                "Email: " + appointment.getEmail() + "\n" +
+                "Message: " + appointment.getMessage() + "\n" +
+                "Contact: " + appointment.getContact() + "\n" +
+                "Appointment Date: " + appointment.getAppointmentDate() + "\n" +
+                "Car: " + appointment.getCar().getName() + "\n\n" +
+                "Thank you.");
         mailSender.send(mailMessage);
     }
 }

@@ -48,6 +48,22 @@ public class AppointmentService {
         }
     }
 
+    public Appointment updateAppointmentStatus(Integer id, String status) {
+        Optional<Appointment> existingAppointment = appointmentRepository.findById(id);
+        if (existingAppointment.isPresent()) {
+            Appointment appointmentToUpdate = existingAppointment.get();
+            if (appointmentToUpdate.canUpdateStatus(status)) {
+                appointmentToUpdate.setStatus(status);
+                return appointmentRepository.save(appointmentToUpdate);
+            } else {
+                throw new IllegalArgumentException("Invalid status update");
+            }
+        } else {
+            return null;
+        }
+    }
+
+
     public void deleteAppointmentById(Integer id) {
         appointmentRepository.deleteById(id);
     }
