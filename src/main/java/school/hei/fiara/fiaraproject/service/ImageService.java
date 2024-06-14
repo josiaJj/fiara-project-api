@@ -1,8 +1,9 @@
 package school.hei.fiara.fiaraproject.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import school.hei.fiara.fiaraproject.model.Images;
+import school.hei.fiara.fiaraproject.model.Image;
 import school.hei.fiara.fiaraproject.repository.ImageRepository;
 
 
@@ -10,40 +11,33 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class ImageService {
-
     @Autowired
     private ImageRepository imageRepository;
 
-    public Images getImageById(Integer id) {
-        Optional<Images> imageOptional = imageRepository.findById(id);
-       if (imageOptional.isPresent()){
-         imageOptional.get();
-       }
-       return null;
+    public Optional<Image> findById(Integer id){
+        return  imageRepository.findById(id);
     }
-
-    public List<Images> getAllImages() {
+    public List<Image> finAll(){
         return imageRepository.findAll();
     }
-
-    public Images createImage(Images image) {
-        return imageRepository.save(image);
+    public Image register(Image image){
+        return  imageRepository.save(image);
     }
+    public void delete(Integer id ){
+        imageRepository.deleteImageById(id);
+    }
+    public Image updateImage(Integer id, Image newImageDetails) {
+        Optional<Image> optionalImage = imageRepository.findById(id);
 
-    public Images updateImage(Integer id, Images image) {
-        Optional<Images> existingImage = imageRepository.findById(id);
-        if (existingImage.isPresent()) {
-            Images imageToUpdate = existingImage.get();
-            imageToUpdate.setProductId(image.getProductId());
-            imageToUpdate.setUrl(image.getUrl());
-            return imageRepository.save(imageToUpdate);
+        if (optionalImage.isPresent()) {
+            Image existingImage = optionalImage.get();
+            existingImage.setName(newImageDetails.getName());
+            existingImage.setUrl(newImageDetails.getUrl());
+            return imageRepository.save(existingImage);
         } else {
-            return null;
+            throw new RuntimeException("User not found with id  : " + id);
         }
-    }
-
-    public void deleteImageById(Integer id) {
-        imageRepository.deleteById(id);
     }
 }

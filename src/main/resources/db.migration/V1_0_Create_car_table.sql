@@ -1,18 +1,14 @@
 CREATE TABLE car (
-    id SERIAL PRIMARY KEY,
+    car_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
-    brand VARCHAR(255) NOT NULL,
-    model VARCHAR(255) NOT NULL,
-    price DOUBLE PRECISION NOT NULL,
-    color VARCHAR(255),
-    motorType VARCHAR(255),
-    power VARCHAR(255),
-    place_number INT NOT NULL,
-    status VARCHAR(255) NOT NULL,
-    type VARCHAR(255)
+    brand VARCHAR(100),
+    model VARCHAR(100),
+    price DECIMAL(10, 2),
+    color VARCHAR(50),
+    motor_type VARCHAR(100),
+    power INT,
+    place_number INT,
+    status ENUM('Pinned', 'Not Pinned'),
+    type VARCHAR(100)
 );
-
-INSERT INTO car (name, description, brand, model, price, color, motorType, power, place_number, status, type)
-VALUES ('Toyota Camry', 'Family sedan car', 'Toyota', 'Camry', 25000.0, 'Silver', 'Gasoline', '180 hp', 5, 'Available', 'Sedan'),
-       ('Honda Civic', 'Compact car', 'Honda', 'Civic', 22000.0, 'Red', 'Gasoline', '158 hp', 5, 'Available', 'Sedan');

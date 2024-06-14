@@ -1,55 +1,77 @@
 package school.hei.fiara.fiaraproject.controller;
 
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import school.hei.fiara.fiaraproject.model.LoginRequest;
 import school.hei.fiara.fiaraproject.model.User;
+import school.hei.fiara.fiaraproject.repository.UserRepository;
 import school.hei.fiara.fiaraproject.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin
-public class UserController {
+@RequestMapping("/api/users")
+@CrossOrigin(origins = {"http://localhost:3000"})
 
+public class UserController {
     @Autowired
     private UserService userService;
-
-    @PostMapping("/User/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        String token = userService.login(loginRequest);
-        if (token != null) {
-            return ResponseEntity.ok(token);
-        } else {
-            return ResponseEntity.status(HttpStatus.OK).body("Invalid username or password");
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody User user) {
+        User foundUser = userRepository.findByEmail(user.getEmail());
+        if(foundUser != null && foundUser.getPassword().equals(user.getPassword())){
+            return ResponseEntity.ok().body("Login successful");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
     }
-    @GetMapping("/User/{id}")
-    public User getUserById(@PathVariable Integer id){
-        return userService.getUserById(id);
+
+
+    @PostMapping("/register")
+    public ResponseEntity<User> register(@RequestBody User newUser) {
+        User user = userService.register(newUser);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
-
-    @GetMapping("/User")
-    public List<User> getAllUsers() {
-        return userService.findAll();
+    @PostMapping("/api/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return ResponseEntity.ok("Logout successful");
     }
 
-    @PostMapping("/User/Create")
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    @GetMapping("/all")
+    public List<User> findAllUser(){
+        return  userService.allUser();
     }
-
-    @PutMapping("/User/Update/{id}")
-    public User updateUser(@PathVariable Integer id, @RequestBody User updatedUser) {
-        return userService.updateUser(id, updatedUser);
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Integer id ){
+        userService.deleteUser(id);
     }
-
-    @DeleteMapping("/User/Delete/{id}")
-    public void deleteUserById(@PathVariable Integer id) {
-        userService.deleteUserById(id);
+    @GetMapping("/{id}")
+    public Optional<User> findById(@PathVariable Integer id){
+        return userService.findById(id);
+    }
+    @PutMapping("/{id}")
+    public User UpdateUser(@PathVariable Integer id , @RequestBody User user){
+        return  userService.updateUser(id,user);
     }
 }

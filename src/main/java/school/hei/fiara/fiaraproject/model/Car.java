@@ -1,51 +1,61 @@
 package school.hei.fiara.fiaraproject.model;
 
 import jakarta.persistence.*;
-import lombok.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
+import java.math.BigDecimal;
+import school.hei.fiara.fiaraproject.model.Brand;
+
 @Entity
 @Table(name = "car")
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
-
-    @Column(name = "name" , nullable = false , length = 200)
+    private Integer carId;
+    @Column(nullable = false)
     private String name;
-
-    @Column(name = "description" , nullable = false, length = 200)
+    @Column(columnDefinition = "TEXT")
     private String description;
-
-    @Column(name = "brand" , nullable = false , length = 200)
-    private String brand;
-
-    @Column(name = "model" , nullable = false , length = 200)
+    @ManyToOne
+    @JoinColumn(name = "brand_id", referencedColumnName = "brandId",nullable = true)
+    private Brand brandId;
     private String model;
-
-    @Column(name = "price" , nullable = false)
-    private double price;
-
-    @Column(name = "color" , nullable = false , length = 200)
+    @Column(precision = 10, scale = 2)
+    private BigDecimal price;
     private String color;
-
-    @Column(name = "motorType" , nullable = false , length = 200)
     private String motorType;
-
-    @Column(name = "power" , nullable = false , length = 200)
-    private String power;
-
-    @Column(name = "place_number" , nullable = false , length = 200)
-    private int placeNumber;
-
-    @Column(name = "status" , nullable = false , length = 200)
-    private String status;
-
-    @Column(name = "type" ,nullable = false , length = 200)
+    private Integer power;
+    private Integer placeNumber;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     private String type;
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "image_id", referencedColumnName = "imageId",nullable = true)
+    private Image imageId;
+    public enum Status {Pinned, NotPinned}
+
+    public Car(Integer carId, String name, String description, Brand brandId, String model, BigDecimal price, String color, String motorType, Integer power, Integer placeNumber, Status status, String type, Image imageId) {
+        this.carId = carId;
+        this.name = name;
+        this.description = description;
+        this.brandId = brandId;
+        this.model = model;
+        this.price = price;
+        this.color = color;
+        this.motorType = motorType;
+        this.power = power;
+        this.placeNumber = placeNumber;
+        this.status = status;
+        this.type = type;
+        this.imageId = imageId;
+    }
+
+    public Integer getCarId() {
+        return carId;
+    }
+
+    public void setCarId(Integer carId) {
+        this.carId = carId;
+    }
 
     public String getName() {
         return name;
@@ -63,12 +73,12 @@ public class Car {
         this.description = description;
     }
 
-    public String getBrand() {
-        return brand;
+    public Brand getBrandId() {
+        return brandId;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setBrandId(Brand brandId) {
+        this.brandId = brandId;
     }
 
     public String getModel() {
@@ -79,11 +89,11 @@ public class Car {
         this.model = model;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -103,36 +113,28 @@ public class Car {
         this.motorType = motorType;
     }
 
-    public String getPower() {
+    public Integer getPower() {
         return power;
     }
 
-    public void setPower(String power) {
+    public void setPower(Integer power) {
         this.power = power;
     }
 
-    public int getPlaceNumber() {
+    public Integer getPlaceNumber() {
         return placeNumber;
     }
 
-    public void setPlaceNumber(int placeNumber) {
+    public void setPlaceNumber(Integer placeNumber) {
         this.placeNumber = placeNumber;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getType() {
@@ -143,6 +145,11 @@ public class Car {
         this.type = type;
     }
 
+    public Image getImageId() {
+        return imageId;
+    }
 
-
+    public void setImageId(Image imageId) {
+        this.imageId = imageId;
+    }
 }

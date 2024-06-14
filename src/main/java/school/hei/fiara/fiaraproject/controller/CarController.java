@@ -6,39 +6,43 @@ import school.hei.fiara.fiaraproject.model.Car;
 import school.hei.fiara.fiaraproject.service.CarService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@CrossOrigin
-public class CarController {
+@RequestMapping("/api/car")
+@CrossOrigin(origins = {"http://localhost:3000"})
 
+public class CarController {
     @Autowired
     private CarService carService;
 
-    @GetMapping("/Car/{id}")
-    public Car getCarById(@PathVariable Integer id) {
-        return carService.getCarById(id);
+    @GetMapping("/all")
+    public List<Car> findAll(){
+        return  carService.findAllCar();
+    }
+    @GetMapping("/{id}")
+    public Optional<Car> findById(@PathVariable Integer id){
+        return  carService.findCarById(id);
     }
 
-    @GetMapping("/Car")
-    public List<Car> getAllCars() {
-        return carService.getAllCars();
+    @PostMapping("/register")
+    public  Car register(@RequestBody  Car car){
+        return carService.saveCar(car);
     }
-
-    @PostMapping("/Car/Create")
-    public Car createCar(@RequestBody Car car) {
-        return carService.createCar(car);
+    @DeleteMapping("/{id}")
+    public  void deleteCar(@PathVariable Integer id ){
+        carService.delete(id);
     }
-
-    @PutMapping("/Car/Update/{id}")
-    public Car updateCar(@PathVariable Integer id, @RequestBody Car car) {
-        return carService.updateCar(id, car);
+    @GetMapping("/brand")
+    public List<Car> getCarsByBrand(@RequestParam String brand) {
+        return carService.findAllCarByBrand(brand);
     }
-
-    @DeleteMapping("/Car/Delete/{id}")
-    public void deleteCarById(@PathVariable Integer id) {
-        carService.deleteCarById(id);
+    @GetMapping("/brand-name")
+    public List<Car> findCarsByBrandModelContaining(@RequestParam String brand) {
+        return carService.findCarsByBrandModelContaining(brand);
     }
-
-
-
+    @PutMapping("/{id}")
+    public Car UpdateCar(@PathVariable Integer id , @RequestBody Car car){
+        return  carService.updateCar(id,car);
+    }
 }

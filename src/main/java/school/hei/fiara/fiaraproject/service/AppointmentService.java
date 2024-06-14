@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import school.hei.fiara.fiaraproject.model.Appointment;
 import school.hei.fiara.fiaraproject.repository.AppointmentRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,58 +14,30 @@ public class AppointmentService {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
-
-    public Appointment getAppointmentById(Integer id) {
-        Optional<Appointment> appointmentOptional = appointmentRepository.findById(id);
-        if (appointmentOptional.isPresent()){
-            return appointmentOptional.get();
-        }
-        return null;
-    }
-
-    public List<Appointment> getAllAppointments() {
-        return appointmentRepository.findAll();
-    }
-
-    public Appointment createAppointment(Appointment appointment) {
+    @Autowired
+    private EmailService emailService;
+    public  Optional<Appointment>findById(Integer id){ return appointmentRepository.findById(id);}
+    public List<Appointment> findAll(){return appointmentRepository.findAll();}
+    public Appointment register(Appointment appointment){
         return appointmentRepository.save(appointment);
     }
-
-    public Appointment updateAppointment(Integer id, Appointment appointment) {
-        Optional<Appointment> existingAppointment = appointmentRepository.findById(id);
-        if (existingAppointment.isPresent()) {
-            Appointment appointmentToUpdate = existingAppointment.get();
-            appointmentToUpdate.setCar(appointment.getCar());
-            appointmentToUpdate.setName(appointment.getName());
-            appointmentToUpdate.setFirstName(appointment.getFirstName());
-            appointmentToUpdate.setEmail(appointment.getEmail());
-            appointmentToUpdate.setMessage(appointment.getMessage());
-            appointmentToUpdate.setContact(appointment.getContact());
-            appointmentToUpdate.setAppointmentDate(appointment.getAppointmentDate());
-            appointmentToUpdate.setStatus(appointment.getStatus());
-            return appointmentRepository.save(appointmentToUpdate);
-        } else {
-            return null;
-        }
-    }
-
-    public Appointment updateAppointmentStatus(Integer id, String status) {
-        Optional<Appointment> existingAppointment = appointmentRepository.findById(id);
-        if (existingAppointment.isPresent()) {
-            Appointment appointmentToUpdate = existingAppointment.get();
-            if (appointmentToUpdate.canUpdateStatus(status)) {
-                appointmentToUpdate.setStatus(status);
-                return appointmentRepository.save(appointmentToUpdate);
-            } else {
-                throw new IllegalArgumentException("Invalid status update");
-            }
-        } else {
-            return null;
-        }
-    }
-
-
-    public void deleteAppointmentById(Integer id) {
+    public void delete(Integer id){
         appointmentRepository.deleteById(id);
+    }
+    public void updateStatus(Integer appointmentId) {
+        Optional<Appointment> optionalAppointment = appointmentRepository.findById(appointmentId);
+        if (optionalAppointment.isPresent()) {
+            Appointment appointment = optionalAppointment.get();
+            LocalDateTime now = LocalDateTime.now();
+            if (appointment.getAppointmentDate().isBefore(now)) {
+                appointment.setStatus(Appointment.Status.archived);
+                appointmentRepository.save(appointment);
+                String emailBody = "Votre rendez-vous a été archivé.";
+                emailService.sendEmail(appointment.getEmail(), "Statut du rendez-vous mis à jour", emailBody);
+            } else {
+                appointment.setStatus(Appointment.Status.validated);
+                appointmentRepository.save(appointment);
+            }
+        }
     }
 }

@@ -2,68 +2,62 @@ package school.hei.fiara.fiaraproject.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import java.time.LocalDateTime;
 
-
-import java.time.Instant;
-
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Data
+
 @Table(name = "appointment")
 public class Appointment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id" , nullable = false)
-    private int id;
-    @ManyToOne
-    @JoinColumn(name = "car_id", nullable = false)
-    private Car car;
-    @Column(name = "name" , nullable = false , length = 200)
-    private String name;
+    private Integer appointmentId;
 
-    @Column(name = "first_name" , nullable = false , length = 200)
+    @ManyToOne
+    @JoinColumn(name = "car_id", referencedColumnName = "carId")
+    private Car car;
+
+    private String name;
     private String firstName;
 
-    @Column(name = "email", nullable = false , length = 200)
+    @Column(nullable = false)
     private String email;
 
-    @Column(name = "message" , nullable = false , length = 200)
+    @Column(columnDefinition = "TEXT")
     private String message;
 
-    @Column(name = "contact" , nullable = false , length = 200)
     private String contact;
 
-    @Column(name = "appointment_date" , nullable = false)
-    private Instant appointmentDate;
+    private LocalDateTime appointmentDate;
 
-    @Column(name = "status" , nullable = false , length = 200)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
-
-    public boolean canUpdateStatus(String newStatus) {
-        if (appointmentDate.isAfter(Instant.now())) {
-            return newStatus.equals("Confirm") || newStatus.equals("Reject");
-        } else {
-            return newStatus.equals("Archive");
-        }
-    }
-    public String getStatus() {
-        return status;
+    public enum Status {
+        pending, validated, rejected,archived
     }
 
-    public void setStatus(String status) {
+    public Appointment(Integer appointmentId, Car car, String name, String firstName, String email, String message, String contact, LocalDateTime appointmentDate, Status status) {
+        this.appointmentId = appointmentId;
+        this.car = car;
+        this.name = name;
+        this.firstName = firstName;
+        this.email = email;
+        this.message = message;
+        this.contact = contact;
+        this.appointmentDate = appointmentDate;
         this.status = status;
     }
 
-    public int getId() {
-        return id;
+    public Integer getAppointmentId() {
+        return appointmentId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setAppointmentId(Integer appointmentId) {
+        this.appointmentId = appointmentId;
     }
 
     public Car getCar() {
@@ -114,11 +108,19 @@ public class Appointment {
         this.contact = contact;
     }
 
-    public Instant getAppointmentDate() {
+    public LocalDateTime getAppointmentDate() {
         return appointmentDate;
     }
 
-    public void setAppointmentDate(Instant appointmentDate) {
+    public void setAppointmentDate(LocalDateTime appointmentDate) {
         this.appointmentDate = appointmentDate;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

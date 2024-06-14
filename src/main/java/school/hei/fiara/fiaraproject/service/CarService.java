@@ -10,82 +10,55 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CarService {
 
+public class CarService {
     @Autowired
     private CarRepository carRepository;
 
-    public Car getCarById(Integer id) {
-        Optional<Car> carOptional = carRepository.findById(id);
-        if (carOptional.isPresent()){
-            carOptional.get();
-        }
-        return null;
+    public Optional<Car> findCarById(Integer id) {
+        return carRepository.findById(id);
     }
 
-    public List<Car> getAllCars() {
+    public List<Car> findAllCar() {
         return carRepository.findAll();
     }
 
-    public Car createCar(Car car) {
+    public Car saveCar(Car car) {
         return carRepository.save(car);
     }
 
-    public Car updateCar(Integer id, Car car) {
-        Optional<Car> existingCar = carRepository.findById(id);
-        if (existingCar.isPresent()) {
-            Car carToUpdate = existingCar.get();
-            carToUpdate.setName(car.getName());
-            carToUpdate.setDescription(car.getDescription());
-            carToUpdate.setBrand(car.getBrand());
-            carToUpdate.setModel(car.getModel());
-            carToUpdate.setPrice(car.getPrice());
-            carToUpdate.setColor(car.getColor());
-            carToUpdate.setMotorType(car.getMotorType());
-            carToUpdate.setPower(car.getPower());
-            carToUpdate.setPlaceNumber(car.getPlaceNumber());
-            carToUpdate.setStatus(car.getStatus());
-            carToUpdate.setType(car.getType());
-            return carRepository.save(carToUpdate);
+    public void delete(Integer id) {
+        carRepository.deleteCarById(id);
+    }
+
+    public List<Car> findAllCarByBrand(String brand) {
+        return carRepository.findCarsByBrandName(brand);
+    }
+
+    public List<Car> findCarsByBrandModelContaining(String brand) {
+        return carRepository.findCarsByBrandNameOrModelContaining(brand);
+    }
+
+    public Car updateCar(Integer id, Car newCarDetails) {
+        Optional<Car> optionalCar = carRepository.findById(id);
+
+        if (optionalCar.isPresent()) {
+            Car existingCar = optionalCar.get();
+            existingCar.setName(newCarDetails.getName());
+            existingCar.setDescription(newCarDetails.getDescription());
+            existingCar.setBrandId(newCarDetails.getBrandId());
+            existingCar.setModel(newCarDetails.getModel());
+            existingCar.setPrice(newCarDetails.getPrice());
+            existingCar.setPrice(newCarDetails.getPrice());
+            existingCar.setMotorType(newCarDetails.getMotorType());
+            existingCar.setPower(newCarDetails.getPower());
+            existingCar.setPlaceNumber(newCarDetails.getPlaceNumber());
+            existingCar.setStatus(newCarDetails.getStatus());
+            existingCar.setType(newCarDetails.getType());
+            existingCar.setImageId(newCarDetails.getImageId());
+            return carRepository.save(existingCar);
         } else {
-            return null;
+            throw new RuntimeException("User not found with id  : " + id);
         }
     }
-
-    public void deleteCarById(Integer id) {
-        carRepository.deleteById(id);
-    }
-
-
-    public List<String> getAllCarTypes() {
-        return carRepository.findDistinctTypes();
-    }
-
-    public List<String> getAllMotorTypes() {
-        return carRepository.findDistinctMotorTypes();
-    }
-
-    public Double getMinPrice() {
-        return carRepository.findMinPrice();
-    }
-
-    public Double getMaxPrice() {
-        return carRepository.findMaxPrice();
-    }
-
-    public List<String> getCarBrands(int limit) {
-        return carRepository.findDistinctBrands(PageRequest.of(0, limit));
-    }
-
-    public List<Car> getShowCars(int limit) {
-        return carRepository.findShowCar(PageRequest.of(0, limit));
-    }
-
-    public List<Car> getCarsByBrand(String brand) {
-        return carRepository.findByBrand(brand);
-    }
-    public List<Car> getCarByModel(String model){
-        return carRepository.findByModel(model);
-    }
-
 }

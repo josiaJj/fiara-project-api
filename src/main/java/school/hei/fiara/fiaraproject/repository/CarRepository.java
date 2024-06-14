@@ -13,27 +13,13 @@ import java.util.List;
 @Repository
 public interface CarRepository extends JpaRepository<Car, Integer> {
 
-    @Query("SELECT DISTINCT c.type FROM Car c")
-    List<String> findDistinctTypes();
+    @Query(value = "SELECT DeleteCar(:carId);", nativeQuery = true)
+    void deleteCarById(@Param("carId") Integer imageId);
 
-    @Query("SELECT DISTINCT c.motorType FROM Car c")
-    List<String> findDistinctMotorTypes();
+    @Query("SELECT c FROM Car c INNER JOIN c.brandId b WHERE b.name = :brandName")
+    List<Car> findCarsByBrandName(@Param("brandName") String brandName);
 
-    @Query("SELECT MIN(c.price) FROM Car c")
-    Double findMinPrice();
+    @Query("SELECT c FROM Car c INNER JOIN c.brandId b WHERE LOWER(b.name) LIKE CONCAT('%', LOWER(:keyword), '%') OR LOWER(c.model) LIKE CONCAT('%', LOWER(:keyword), '%')")
+    List<Car> findCarsByBrandNameOrModelContaining(@Param("keyword") String keyword);
 
-    @Query("SELECT MAX(c.price) FROM Car c")
-    Double findMaxPrice();
-
-    @Query("SELECT DISTINCT c.brand FROM Car c")
-    List<String> findDistinctBrands(Pageable pageable);
-
-    @Query("SELECT c FROM Car c ORDER BY c.id DESC")
-    List<Car> findShowCar(Pageable pageable);
-
-    @Query("SELECT c FROM Car c WHERE c.brand = :brand")
-    List<Car> findByBrand(@Param("brand") String brand);
-
-    @Query("SELECT c FROM Car c WHERE c.model = :model")
-    List<Car> findByModel(@Param("model") String model);
 }
