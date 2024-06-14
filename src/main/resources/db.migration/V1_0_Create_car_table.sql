@@ -1,5 +1,7 @@
+CREATE TYPE car_status AS ENUM ('Pinned', 'Not Pinned');
+
 CREATE TABLE car (
-    car_id INT AUTO_INCREMENT PRIMARY KEY,
+    car_id  SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
     brand VARCHAR(100),
@@ -9,6 +11,6 @@ CREATE TABLE car (
     motor_type VARCHAR(100),
     power INT,
     place_number INT,
-    status ENUM('Pinned', 'Not Pinned'),
+    status car_status,
     type VARCHAR(100)
 );
